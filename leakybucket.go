@@ -29,9 +29,11 @@ func (b *Bucket) AddOne() bool {
 	curTime := time.Now()
 	dura := curTime.Sub(b.last) / (1000 * 1000)
 	t := int(dura) / b.Rate
-	b.Remain += t
-	if b.Remain > b.Burst {
-		b.Remain = b.Burst
+	if t > 0 {
+		b.Remain += t
+		if b.Remain > b.Burst {
+			b.Remain = b.Burst
+		}
 	}
 
 	if b.Remain <= 0 {
